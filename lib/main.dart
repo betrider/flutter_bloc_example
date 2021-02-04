@@ -2,7 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_example/SampleBloc.dart';
+import 'package:flutter_bloc_example/bloc/bloc_main.dart';
 import 'package:flutter_bloc_example/SampleCubit.dart';
+
+import 'bloc/counter_bloc.dart';
 
 class MyBlocObserver extends BlocObserver {
   //블럭 전역 옵저버(내부동작 이후 옵저버작동)
@@ -60,6 +63,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<CounterBloc>(
           create: (context) => CounterBloc(),
         ),
+        BlocProvider<CounterBloc2>(
+          create: (context) => CounterBloc2(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -92,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RaisedButton(
+            ElevatedButton(
               child: BlocBuilder<CounterCubit, int>(
                 builder: (context, count) {
                   print('main cubit build');
@@ -108,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
-            RaisedButton(
+            ElevatedButton(
               child: BlocBuilder<CounterBloc, int>(
                 builder: (context, count) {
                   print('main bloc build');
@@ -123,7 +129,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     )
                 );
               },
-            )
+            ),
+            ElevatedButton(
+              child: Text('new bloc sample'),
+              onPressed: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => BlocMain(),
+                    )
+                );
+              },
+            ),
           ],
         ),
       ),
