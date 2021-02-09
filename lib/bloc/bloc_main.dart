@@ -51,6 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   Text(
                     '${state.count}',
+                    // ignore: deprecated_member_use
                     style: Theme.of(context).textTheme.display1,
                   ),
                 ],

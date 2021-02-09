@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc_example/SampleBloc.dart';
+import 'package:flutter_bloc_example/SampleBloc1.dart';
+import 'package:flutter_bloc_example/SampleBloc3.dart';
 import 'package:flutter_bloc_example/bloc/bloc_main.dart';
 import 'package:flutter_bloc_example/SampleCubit.dart';
 
@@ -60,11 +61,14 @@ class MyApp extends StatelessWidget {
         BlocProvider<CounterCubit>(
           create: (context) => CounterCubit(),
         ),
-        BlocProvider<CounterBloc>(
-          create: (context) => CounterBloc(),
+        BlocProvider<CounterBloc1>(
+          create: (context) => CounterBloc1(),
         ),
         BlocProvider<CounterBloc2>(
           create: (context) => CounterBloc2(),
+        ),
+        BlocProvider<CounterBloc3>(
+          create: (context) => CounterBloc3(),
         ),
       ],
       child: MaterialApp(
@@ -115,17 +119,33 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ElevatedButton(
-              child: BlocBuilder<CounterBloc, int>(
+              child: BlocBuilder<CounterBloc1, int>(
                 builder: (context, count) {
-                  print('main bloc build');
-                  return Text('bloc $count');
+                  print('main abstract bloc build');
+                  return Text('abstract bloc $count');
                 },
               ),
               onPressed: (){
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => SampleBloc(),
+                      builder: (_) => SampleBloc1(),
+                    )
+                );
+              },
+            ),
+            ElevatedButton(
+              child: BlocBuilder<CounterBloc3, int>(
+                builder: (context, count) {
+                  print('main enum bloc build');
+                  return Text('enum bloc $count');
+                },
+              ),
+              onPressed: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => SampleBloc3(),
                     )
                 );
               },

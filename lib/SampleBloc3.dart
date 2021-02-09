@@ -1,27 +1,35 @@
+//2.bloc enum 버전
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
-abstract class CounterEvent {}
+enum EventStatus { IncrementCounter, DecrementCounter }
 
-class IncrementCounter extends CounterEvent {}
+class CounterEvent3 {
+  final int value;
+  final EventStatus status;
 
-class DecrementCounter extends CounterEvent {}
+  CounterEvent3(this.value, this.status);
+}
 
-class CounterBloc extends Bloc<CounterEvent, int>{
-  CounterBloc() : super(0);
+class CounterBloc3 extends Bloc<CounterEvent3, int> {
+  CounterBloc3() : super(0);
 
   @override
-  Stream<int> mapEventToState(CounterEvent event) async*{
-    if(event is IncrementCounter){
-      yield state + 1;
-    }else if(event is DecrementCounter){
-      yield state + -1;
+  Stream<int> mapEventToState(CounterEvent3 event) async* {
+    print('event.status:${event.status}');
+    print('event.value:${event.value}');
+    print('event: $event');
+    print('state: $state');
+    if (event.status == EventStatus.IncrementCounter) {
+      yield state + event.value;
+    } else if (event.status == EventStatus.DecrementCounter) {
+      yield state - event.value;
     }
   }
-  
+
   @override
-  void onEvent(CounterEvent event) {
+  void onEvent(CounterEvent3 event) {
     print(event);
     super.onEvent(event);
   }
@@ -39,19 +47,19 @@ class CounterBloc extends Bloc<CounterEvent, int>{
   }
 
   @override
-  void onTransition(Transition<CounterEvent, int> transition) {
+  void onTransition(Transition<CounterEvent3, int> transition) {
     print(transition);
     super.onTransition(transition);
   }
 }
 
-class SampleBloc extends StatelessWidget {
+class SampleBloc3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print('build1');
+    print('build3');
     return Scaffold(
       appBar: AppBar(title: const Text('Counter')),
-      body: BlocBuilder<CounterBloc, int>(
+      body: BlocBuilder<CounterBloc3, int>(
         builder: (context, count) {
           print('SampleBloc build');
           return Center(child: Text('$count'));
@@ -66,7 +74,9 @@ class SampleBloc extends StatelessWidget {
             child: FloatingActionButton(
               heroTag: null,
               child: const Icon(Icons.add),
-              onPressed: () => context.read<CounterBloc>().add(IncrementCounter()),
+              onPressed: () => context
+                  .read<CounterBloc3>()
+                  .add(CounterEvent3(1, EventStatus.IncrementCounter)),
             ),
           ),
           Padding(
@@ -74,7 +84,9 @@ class SampleBloc extends StatelessWidget {
             child: FloatingActionButton(
               heroTag: null,
               child: const Icon(Icons.remove),
-              onPressed: () => context.read<CounterBloc>().add(DecrementCounter()),
+              onPressed: () => context
+                  .read<CounterBloc3>()
+                  .add(CounterEvent3(1, EventStatus.DecrementCounter)),
             ),
           ),
         ],
